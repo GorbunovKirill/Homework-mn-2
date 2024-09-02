@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <iomanip>  // Для работы с форматированием вывода
 
 void parallel_sum(const std::vector<int>& a, const std::vector<int>& b, std::vector<int>& result, int start, int end) {
     for (int i = start; i < end; ++i) {
@@ -37,21 +38,30 @@ int main() {
     setlocale(LC_ALL, "Russian");
 
     std::vector<int> sizes = { 1000, 10000, 100000, 1000000 };
-    std::vector<int> thread_counts = { 2, 4, 8, 16 };
+    std::vector<int> thread_counts = { 1, 2, 4, 8, 16 };
 
-    std::cout << "Доступное количество аппаратных ядер: " << std::thread::hardware_concurrency() << std::endl;
+    std::cout << "Количество аппаратных ядер - " << std::thread::hardware_concurrency() << std::endl;
 
-    for (int size : sizes) {
-        std::cout << "\nРазмер векторов: " << size << std::endl;
+    // Заголовок таблицы
+    std::cout << std::setw(15) << " "
+        << std::setw(10) << "1000"
+        << std::setw(10) << "10000"
+        << std::setw(10) << "100000"
+        << std::setw(12) << "1000000" << std::endl;
 
-        std::vector<int> a(size, 1);
-        std::vector<int> b(size, 2);
-        std::vector<int> result(size);
+    for (int num_threads : thread_counts) {
+        std::cout << std::setw(10) << num_threads << " потоков";
 
-        for (int num_threads : thread_counts) {
+        for (int size : sizes) {
+            std::vector<int> a(size, 1);
+            std::vector<int> b(size, 2);
+            std::vector<int> result(size);
+
             double time_taken = measure_time(num_threads, a, b, result);
-            std::cout << "Потоков: " << num_threads << ", Время: " << time_taken << " сек" << std::endl;
+            std::cout << std::setw(10) << std::fixed << std::setprecision(6) << time_taken << "s";
         }
+
+        std::cout << std::endl;
     }
 
     return 0;
