@@ -2,7 +2,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
-#include <iomanip>  // Для работы с форматированием вывода
+#include <iomanip> 
 
 void parallel_sum(const std::vector<int>& a, const std::vector<int>& b, std::vector<int>& result, int start, int end) {
     for (int i = start; i < end; ++i) {
@@ -42,7 +42,7 @@ int main() {
 
     std::cout << "Количество аппаратных ядер - " << std::thread::hardware_concurrency() << std::endl;
 
-    // Заголовок таблицы
+
     std::cout << std::setw(15) << " "
         << std::setw(10) << "1000"
         << std::setw(10) << "10000"
